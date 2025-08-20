@@ -29,7 +29,6 @@ The system is built with:
 ---
 
 ## 📂 Project Structure
-
 .
 ├── frontend/
 │   ├── dashboard.html       # Dashboard UI
@@ -47,7 +46,6 @@ The system is built with:
 │   ├── ... (merchant repo, config, firebase client, models)
 │
 └── README.md
-
 ---
 
 ## 🛠️ Setup & Installation
