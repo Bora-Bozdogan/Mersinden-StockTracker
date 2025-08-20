@@ -28,26 +28,6 @@ The system is built with:
 
 ---
 
-## 📂 Project Structure
-.
-├── frontend/
-│   ├── dashboard.html       # Dashboard UI
-│   ├── dashboard.css        # Dashboard styles
-│   ├── dashboard.js         # Dashboard functionality
-│   ├── login.css            # Login page styles
-│   ├── login.js             # Login functionality
-│   └── index.js             # Entry point script (frontend)
-│
-├── backend/
-│   ├── main.go              # Main Fiber server setup
-│   ├── handlers.go          # HTTP request handlers
-│   ├── services.go          # Business logic layer
-│   ├── product_repository.go# Repository for products
-│   ├── ... (merchant repo, config, firebase client, models)
-│
-└── README.md
----
-
 ## 🛠️ Setup & Installation
 
 ### 1. Prerequisites
