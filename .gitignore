@@ -1,0 +1,120 @@
+### Go ###
+# Binaries and build output
+/bin/
+/build/
+/dist/
+/out/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go workspace files
+*.log
+*.cache
+*.tmp
+*.prof
+*.test
+*.coverprofile
+
+# Go coverage files
+*.cover
+*.coverprofile
+
+# Dependency directories (Go modules keep go.sum and go.mod)
+vendor/
+
+# IDE-specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+### Node / JS ###
+# Dependencies
+node_modules/
+
+# Build artifacts
+public/build/
+public/dist/
+dist/
+build/
+.npm/
+.npm-cache/
+.cache/
+.tmp/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment / config
+.env
+.env.*       # includes .env.local, .env.production, etc.
+firebase-debug.log
+
+# Coverage
+coverage/
+*.lcov
+
+### Firebase ###
+# Local Firebase config
+.firebase/
+.firebaserc.local
+firebase-debug.log
+firebase-debug.*
+storage_debug.log
+
+# Emulators data
+*.local
+*.runtimeconfig.json
+
+### OS-specific ###
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+### Misc ###
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+
+# Ignore secrets
+secrets.json
+credentials.json
+serviceAccountKey.json
+
+# secrets
+*.secret
+*.key
+*.pem
+serviceAccount*.json
+credentials*.json
+
+# env & runtime config
+.env
+.env.*
+.runtimeconfig.json
+functions/.env
+functions/.env.*
+firebase-debug.log
+
+# local emulator/cache
+.firebase/

@@ -1,0 +1,574 @@
+/* ------------------------------
+   Global reset + variables
+---------------------------------*/
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+:root {
+  --bg: #fafafa;
+  --panel: #ffffff;
+  --panel-2: #fdfdfd;
+  --text: #333333;
+  --muted: #777777;
+  --accent: #ff8c42;            /* warm orange */
+  --accent-light: #ffe6d1;
+  --danger: #ff5a5a;            /* red */
+  --success: #28a745;           /* green */
+  --success-dark: #218838;
+  --neutral: #6c757d;           /* gray */
+  --neutral-dark: #5a6268;
+  --border: #e5e5e5;
+  --ring: rgba(255,140,66,0.35);
+  --shadow: 0 4px 14px rgba(0,0,0,0.08);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --space: 14px;
+  --space-sm: 10px;
+  --space-lg: 20px;
+  --space-xl: 28px;
+  --fw-regular: 500;
+  --fw-bold: 700;
+  --maxw: 980px;
+}
+
+/* Import friendly font */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;700&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  line-height: 1.4;
+}
+
+body {
+  display: grid;
+  place-items: start center;
+  padding: clamp(16px, 4vw, 40px);
+}
+
+/* ------------------------------
+   Logo
+---------------------------------*/
+.site-logo {
+  display: block;
+  margin: 0 auto var(--space-lg) auto;
+  max-width: 160px;
+  height: auto;
+}
+
+/* ------------------------------
+   Header
+---------------------------------*/
+h1 {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 0 var(--space-xl);
+  font-size: clamp(22px, 2.6vw, 34px);
+  font-weight: var(--fw-bold);
+  color: var(--accent);
+  text-align: center;
+}
+
+/* ------------------------------
+   Panels
+---------------------------------*/
+#results, #new-log {
+  width: 100%;
+  max-width: var(--maxw);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+#results { padding: var(--space); }
+
+/* ------------------------------
+   Product list
+---------------------------------*/
+.product {
+  display: flex;
+  flex-direction: column;            /* stable base layout */
+  gap: var(--space);
+  padding: var(--space);
+  border-radius: var(--radius-sm);
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product + .product { margin-top: var(--space); }
+
+.product:hover {
+  background: var(--accent-light);
+  box-shadow: var(--shadow);
+}
+
+/* VIEW block is a single row with compact spacing */
+.product .view {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Your HTML wraps content in <p>; make it a flex row too */
+.product .view p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* EDIT block is hidden by default; shown when .editing is set */
+.product .edit { display: none; }
+
+.product.editing .view { display: none; }
+.product.editing .edit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Compact inline inputs inside product rows */
+.product input[type="text"],
+.product input[type="number"] {
+  width: auto;               /* shrink to fit content */
+  min-width: 40px;           /* keep clickable */
+  max-width: 120px;          /* stay on one line */
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 6px;
+  padding: 4px 8px;          /* compact padding */
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  flex: 0 0 auto;
+  font: inherit;
+}
+
+.product input::placeholder { color: var(--muted); }
+.product input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* ------------------------------
+   Buttons (shared)
+---------------------------------*/
+button {
+  font: inherit;
+}
+
+/* Delete button (red) */
+#results .remove-button {
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: var(--danger);
+  color: #fff;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 3px 8px rgba(255, 90, 90, 0.3);
+}
+#results .remove-button:hover {
+  background: #e14a4a;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(255, 90, 90, 0.4);
+}
+#results .remove-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(255, 90, 90, 0.3);
+}
+
+/* Enter-edit button (green) */
+#results .update-button {
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: var(--success);
+  color: #fff;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 3px 8px rgba(90, 255, 123, 0.3);
+}
+#results .update-button:hover {
+  background: var(--success-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(90, 255, 123, 0.4);
+}
+#results .update-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(90, 255, 98, 0.3);
+}
+
+/* Confirm button in EDIT (green) */
+#results .confirm-update-button {
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: var(--success);
+  color: #fff;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 3px 8px rgba(90, 255, 123, 0.3);
+}
+#results .confirm-update-button:hover {
+  background: var(--success-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(90, 255, 123, 0.4);
+}
+#results .confirm-update-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(90, 255, 98, 0.3);
+}
+
+/* Cancel button in EDIT (neutral gray) */
+#results .cancel-update-button {
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: var(--neutral);
+  color: #fff;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 3px 8px rgba(108, 117, 125, 0.25);
+}
+#results .cancel-update-button:hover {
+  background: var(--neutral-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(108,117,125,0.35);
+}
+#results .cancel-update-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(108,117,125,0.25);
+}
+
+/* ------------------------------
+   New log form
+---------------------------------*/
+#new-log {
+  margin-top: var(--space-xl);
+  padding: var(--space-lg);
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space);
+}
+
+#new-log input[type="text"],
+#new-log input[type="number"] {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#new-log input::placeholder { color: var(--muted); }
+#new-log input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+/* Input layout */
+#product-text-js { grid-column: span 2; }
+#product-description-text-js { grid-column: span 2; }
+#merchant-text-js { grid-column: span 2; }
+#price-text-js { grid-column: span 3; }
+#stock-text-js { grid-column: span 2; }
+
+/* Submit button */
+#log-button-js {
+  grid-column: span 1;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: var(--fw-bold);
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 3px 10px rgba(255,140,66,0.25);
+}
+#log-button-js:hover {
+  background: #e67b35;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(255,140,66,0.3);
+}
+#log-button-js:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(255,140,66,0.2);
+}
+
+/* ------------------------------
+   Responsive tweaks
+---------------------------------*/
+@media (max-width: 900px) {
+  #new-log { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 640px) {
+  #new-log { grid-template-columns: 1fr 1fr; }
+  #product-text-js,
+  #product-description-text-js,
+  #merchant-text-js,
+  #price-text-js,
+  #stock-text-js,
+  #log-button-js { grid-column: span 2; }
+}
+
+/* ------------------------------
+   Floating Logout Button
+---------------------------------*/
+#logout-button {
+  position: fixed;
+  left: max(16px, env(safe-area-inset-left));
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 1000;
+
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+
+  background: var(--neutral);
+  color: #fff;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+#logout-button:hover {
+  background: var(--neutral-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(0,0,0,0.16);
+}
+
+#logout-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+/* Optional icon without changing HTML */
+#logout-button::before {
+  content: "↩︎";
+  margin-right: 8px;
+  line-height: 1;
+}
+
+/* Hide on print */
+@media print {
+  #logout-button { display: none !important; }
+}
+/* === Merchant Data — view mode & buttons === */
+#merchant-data {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 900;                           /* sit above content */
+  width: min(340px, calc(100vw - 32px));  /* responsive */
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  padding: var(--space-sm);
+  font-size: 0.9rem;
+}
+
+#merchant-data h3 {
+  margin: 0 0 var(--space-sm) 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+  font-weight: var(--fw-bold);
+}
+
+/* View: 2-column grid = label | value */
+#merchant-data .view {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 10px;
+  align-items: center;
+}
+#merchant-data .view p {
+  margin: 0;
+  min-width: 0;                 /* allow shrink */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#merchant-data .view p:nth-child(odd) {   /* labels */
+  color: var(--muted);
+  font-weight: var(--fw-bold);
+}
+
+/* Edit state toggling (same idea as products, but grid for tidy inputs) */
+#merchant-data .edit { display: none; }
+#merchant-data.editing .view { display: none; }
+#merchant-data.editing .edit {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+#merchant-data input[type="text"],
+#merchant-data input[type="tel"] {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+#merchant-data input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* Compact action buttons just for the merchant panel */
+#merchant-data .actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;              /* avoid overlap on tiny widths */
+}
+
+/* Enter-edit button (green) */
+#merchant-data .update-merchant-button {
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: var(--success);
+  color: #fff;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 3px 8px rgba(90, 255, 123, 0.3);
+}
+#merchant-data .update-merchant-button:hover {
+  background: var(--success-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(90, 255, 123, 0.4);
+}
+#merchant-data .update-merchant-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(90, 255, 98, 0.3);
+}
+
+/* Confirm button in EDIT (green) */
+#merchant-data .confirm-update-merchant-button {
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: var(--success);
+  color: #fff;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 3px 8px rgba(90, 255, 123, 0.3);
+}
+#merchant-data .confirm-update-merchant-button:hover {
+  background: var(--success-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(90, 255, 123, 0.4);
+}
+#merchant-data .confirm-update-merchant-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(90, 255, 98, 0.3);
+}
+
+/* Cancel button in EDIT (neutral gray) */
+#merchant-data .cancel-update-merchant-button {
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: var(--neutral);
+  color: #fff;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 3px 8px rgba(108, 117, 125, 0.25);
+}
+#merchant-data .cancel-update-merchant-button:hover {
+  background: var(--neutral-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(108,117,125,0.35);
+}
+#merchant-data .cancel-update-merchant-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(108,117,125,0.25);
+}
+
+
+/* Mobile nudge — keep it breathable */
+@media (max-width: 420px) {
+  #merchant-data { left: 16px; right: 16px; width: auto; }
+}
+
+/* Product field labels */
+.product .label {
+  font-weight: var(--fw-bold);
+  color: var(--muted);
+  margin-right: 4px;
+}
+
+/* Values stand out a bit more */
+.product .value {
+  color: var(--text);
+}
+
+/* Extra breathing room between product fields */
+.product .view p {
+  margin: 4px 0;
+}
+
+/* Make .view a wrapping row */
+.merchant-data .view,
+.product .view {
+  display: flex;
+  flex-wrap: wrap;     /* key: allows moving to the next row */
+  align-items: flex-start;
+  gap: 8px 12px;
+}
+
+/* Let the text take the row but shrink if needed */
+.merchant-data .view p,
+.product .view p {
+  flex: 1 1 280px;     /* grows, but can shrink down to ~280px */
+  margin: 0;
+  overflow-wrap: anywhere;  /* break very long words/phones if needed */
+}
+
+/* Keep the button at the right when there's room; otherwise it wraps below */
+.merchant-data .view .update-merchant-button,
+.product .view .update-button {
+  flex: 0 0 auto;
+  margin-left: auto;   /* right-align on the same row when possible */
+}

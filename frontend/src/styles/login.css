@@ -1,0 +1,240 @@
+/* ---------------------------------
+   Login Page Styles (matches dashboard)
+------------------------------------*/
+
+/* Reset + variables (kept standalone) */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+:root {
+  --bg: #fafafa;
+  --panel: #ffffff;
+  --panel-2: #fdfdfd;
+  --text: #333333;
+  --muted: #777777;
+  --accent: #ff8c42;            /* warm orange */
+  --accent-light: #ffe6d1;
+  --danger: #ff5a5a;
+  --danger-bg: #ffe8e8;         /* soft red background */
+  --danger-border: #ffc9c9;     /* light red border */
+  --danger-text: #9e1c1c;       /* readable red text */
+  --success: #28a745;
+  --success-dark: #218838;
+  --neutral: #6c757d;
+  --neutral-dark: #5a6268;
+  --border: #e5e5e5;
+  --ring: rgba(255,140,66,0.35);
+  --shadow: 0 4px 14px rgba(0,0,0,0.08);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --space: 14px;
+  --space-sm: 10px;
+  --space-lg: 20px;
+  --space-xl: 28px;
+  --fw-regular: 500;
+  --fw-bold: 700;
+  --maxw: 420px;                /* tighter for a login card */
+}
+
+/* Friendly font to match dashboard */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;700&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #fff3e9 0%, rgba(255,243,233,0) 60%),
+    radial-gradient(1200px 600px at 110% 110%, #eaf7ff 0%, rgba(234,247,255,0) 60%),
+    var(--bg);
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  line-height: 1.45;
+}
+
+/* Layout */
+body {
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 4vw, 40px);
+}
+
+#content {
+  width: 100%;
+  max-width: var(--maxw);
+}
+
+/* Logo */
+.site-logo {
+  display: block;
+  margin: 0 auto var(--space-lg);
+  max-width: 160px;
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06));
+}
+
+/* Title */
+h1 {
+  margin: 0 0 var(--space-xl);
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight: var(--fw-bold);
+  color: var(--accent);
+  text-align: center;
+  letter-spacing: 0.2px;
+}
+
+/* Login card */
+#login {
+  background: linear-gradient(180deg, var(--panel), var(--panel-2));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(18px, 3.5vw, 28px);
+  display: grid;
+  gap: var(--space);
+}
+
+/* ===============================
+   Login Error (inside #login-error)
+   - Hidden when empty or when no h4
+   - Shows only when an <h4> with text is present
+================================= */
+
+/* Hide container by default; show only when it has a non-empty h4 */
+#login-error { display: none; }
+
+/* Modern, robust show condition (works despite whitespace): */
+#login-error:has(h4:not(:empty)) { display: block; }
+
+/* (Bonus) If your environment ever renders it completely empty */
+#login-error:empty { display: none; }
+
+/* The pretty red banner */
+#login-error h4 {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--danger-bg);
+  color: var(--danger-text);
+  border: 1px solid var(--danger-border);
+  box-shadow: 0 6px 16px rgba(255, 90, 90, 0.18);
+  font-weight: var(--fw-bold);
+  font-size: 0.98rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.1px;
+  animation: pop-in 180ms ease-out;
+}
+
+/* Nice warning glyph without changing your HTML */
+#login-error h4::before {
+  content: "⚠️";
+  font-size: 1.05em;
+  line-height: 1;
+}
+
+/* Inputs */
+#login input[type="text"],
+#login input[type="password"],
+#login input[type="email"] {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font: inherit;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.05s ease;
+}
+
+#login input::placeholder { color: var(--muted); }
+
+#login input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+/* Keep your password field masked even if it's type="text" in HTML */
+#login #login-pass-text { -webkit-text-security: disc; }
+
+/* Button */
+#login #login-button {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-weight: var(--fw-bold);
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+  box-shadow: 0 6px 16px rgba(255,140,66,0.25);
+}
+
+#login #login-button:hover {
+  background: #e67b35;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(255,140,66,0.28);
+}
+
+#login #login-button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 10px rgba(255,140,66,0.22);
+}
+
+/* Signup Button */
+#login #signup-button {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-weight: var(--fw-bold);
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+  box-shadow: 0 6px 16px rgba(255,140,66,0.25);
+}
+
+#login #signup-button:hover {
+  background: #e67b35;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(255,140,66,0.28);
+}
+
+#login #signup-button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 10px rgba(255,140,66,0.22);
+}
+
+
+/* Subtle helper text (optional) */
+.form-hint {
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Animations */
+@keyframes pop-in {
+  from {
+    transform: translateY(-4px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Accessibility: reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+  #login-error h4 { animation: none !important; }
+}
+
+/* Small screens */
+@media (max-width: 420px) {
+  .site-logo { max-width: 140px; }
+  h1 { font-size: clamp(20px, 5vw, 26px); }
+}
